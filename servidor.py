@@ -4,7 +4,7 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(("127.0.0.1", 5000))
 server.listen(1)
 
-mensaje = 'Hola Programación Distribuida, soy Miguel Villamil'.encode()
+mensaje = 'Miguel Villamil'.encode()
 
 print("Servidor esperando conexión...")
 
