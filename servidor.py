@@ -1,15 +1,30 @@
 import socket
+import threading
+
+def handle_client(conn,addr):
+    print(f"Cliente conectado desde {addr}")
+
+    try:
+        student_name = conn.recv(1024).decode()
+        response = f"Hola {student_name}, estas conectado"
+        conn.sendall(response.encode())
+    except Exception as e:
+        print( f"Error con {addr}: {e}")
+    finally:
+        conn.close()
+        print(f"Conexion con {addr} cerrada")
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("127.0.0.1", 5000))
-server.listen(1)
+server.bind(("0.0.0.0", 5000))
+server.listen()
 
-mensaje = 'Miguel Villamil'.encode()
+print("El servidor esta escuchando")
 
-print("Servidor esperando conexión...")
+while True:
+    conn, addr = server.accept()
+    client_thread = threading.Thread(
+        target=handle_client,
+        args=(conn, addr)
+    )
+    client_thread.start()
 
-conn, addr = server.accept()
-print("Cliente conectado:", addr)
-
-conn.sendall(mensaje)
-conn.close()
